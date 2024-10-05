@@ -50,6 +50,7 @@ function createScript() {
   const patrolCupTemp = getTemplate("Patrol Cup");
   const summaryTemp = getTemplate("Summary");
   const trainedTemp = getTemplate("Trained");
+  const otherMiscTemp = getTemplate("Other Misc");
 
   const year = instructionSheet.getRange("E2").getDisplayValue();
   const month = instructionSheet.getRange("E4").getDisplayValue();
@@ -183,6 +184,14 @@ function createScript() {
 
   const allTrained = miscSheet.getRange("E2:E").getDisplayValues();
   if (allTrained[0][0]) totinFiremnTrained(trainedTemp, allTrained);
+
+  const allOtherMisc = miscSheet.getRange("F2:G").getDisplayValues();
+  for (let i = 0; i < allOtherMisc.length; i++) {
+    let misc = allOtherMisc[i];
+    if (misc[0] === "") break;
+
+    addParagraph(otherMiscTemp.replace("{scout}", misc[0]).replace("{award}", misc[1]));
+  }
 
   const allMBs = mbSheet
     .getRange("A2:Z")
