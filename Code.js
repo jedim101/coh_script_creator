@@ -49,6 +49,7 @@ function createScript() {
   const positionTemp = getTemplate("Other Positions");
   const patrolCupTemp = getTemplate("Patrol Cup");
   const summaryTemp = getTemplate("Summary");
+  const trainedTemp = getTemplate("Trained");
 
   const year = instructionSheet.getRange("E2").getDisplayValue();
   const month = instructionSheet.getRange("E4").getDisplayValue();
@@ -73,7 +74,6 @@ function createScript() {
         ui.ButtonSet.YES_NO
       );
 
-      // Process the user's response.
       if (response == ui.Button.YES) {
         newDoc = true;
       } else {
@@ -149,7 +149,7 @@ function createScript() {
   addParagraph(transToAdvance);
   addParagraph();
 
-  function totinFiremn(template, data, type) {
+  function totinFiremnTrained(template, data) {
     let scouts = data[0];
     for (let i = 1; i < data.length; i++) {
       let scout = data[i][0];
@@ -159,15 +159,15 @@ function createScript() {
     }
 
     if (scouts !== "") {
-      addParagraph(template.replace(`{${type}Scouts}`, scouts) + "\n");
+      addParagraph(template.replace(`{scouts}`, scouts) + "\n");
     }
   }
 
   const allTotin = miscSheet.getRange("A2:A").getDisplayValues();
-  if (allTotin[0][0]) totinFiremn(totinTemp, allTotin, "totin");
+  if (allTotin[0][0]) totinFiremnTrained(totinTemp, allTotin);
 
   const allFiremn = miscSheet.getRange("B2:B").getDisplayValues();
-  if (allFiremn[0][0]) totinFiremn(firemnTemp, allFiremn, "firemn");
+  if (allFiremn[0][0]) totinFiremnTrained(firemnTemp, allFiremn);
 
   const allRecruiters = miscSheet.getRange("C2:D").getDisplayValues();
   let recruiters = "";
@@ -180,6 +180,9 @@ function createScript() {
       .replace("{recruiter}", recruiterPair[0])}`;
   }
   if (recruiters) addParagraph(recruiterTemp + recruiters + "\n");
+
+  const allTrained = miscSheet.getRange("E2:E").getDisplayValues();
+  if (allTrained[0][0]) totinFiremnTrained(trainedTemp, allTrained);
 
   const allMBs = mbSheet
     .getRange("A2:Z")
