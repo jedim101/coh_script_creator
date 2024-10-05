@@ -87,6 +87,8 @@ function createScript() {
   if (newDoc) {
     doc = DocumentApp.create(`T182 ${month} ${year} CoH Script`);
     header = doc.addHeader();
+    instructionSheet.getRange("B11").setValue(doc.getUrl());
+    instructionSheet.getRange("C8").uncheck();
   }
 
   header
@@ -195,6 +197,7 @@ function createScript() {
       otherMiscTemp.replace("{scout}", misc[0]).replace("{award}", misc[1])
     );
   }
+  if (allOtherMisc.length > 0) addParagraph();
 
   const allMBs = mbSheet
     .getRange("A2:Z")
