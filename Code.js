@@ -51,6 +51,7 @@ function createScript() {
   const summaryTemp = getTemplate("Summary");
   const trainedTemp = getTemplate("Trained");
   const otherMiscTemp = getTemplate("Other Misc");
+  const newMemberTemp = getTemplate("New Member");
 
   const year = instructionSheet.getRange("E2").getDisplayValue();
   const month = instructionSheet.getRange("E4").getDisplayValue();
@@ -190,7 +191,9 @@ function createScript() {
     let misc = allOtherMisc[i];
     if (misc[0] === "") break;
 
-    addParagraph(otherMiscTemp.replace("{scout}", misc[0]).replace("{award}", misc[1]));
+    addParagraph(
+      otherMiscTemp.replace("{scout}", misc[0]).replace("{award}", misc[1])
+    );
   }
 
   const allMBs = mbSheet
@@ -229,6 +232,14 @@ function createScript() {
   addParagraph();
 
   const allRanks = rankSheet.getRange("A2:B").getDisplayValues();
+
+  const data = allRanks
+    .filter((item) => item[1] === "New Member")
+    .map((d) => d[0]);
+  if (data.length === 0) return;
+
+  addParagraph(newMemberTemp.replace("{scouts}", data.join(", ")));
+  addParagraph();
 
   function rank(template, rank) {
     const data = allRanks.filter((item) => item[1] === rank).map((d) => d[0]);
